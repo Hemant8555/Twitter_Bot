@@ -1,0 +1,35 @@
+body{
+ background-color: #04181f;
+ font-family: sansation;
+}
+#searchbox{
+ size: 40px;
+ border-radius: 5px;
+}
+h1{
+    font-size: 60px;
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+}
+.main {
+    width: 50%;
+    margin: 70px auto;
+}
+
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}

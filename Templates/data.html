@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Twitter Bot</title>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+ <link rel="stylesheet" href="{% static 'style.css' %}">
+ <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+</head>
+
+
+<body>
+ <nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Twitter Bot</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+       </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="card">
+  <div class="card-header">
+    <h2>{{screen_name}}</h2>
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>{{description}}</p>
+      <footer class="blockquote-footer">@{{username}} </footer>
+      <footer class="blockquote-footer">Followers: {{f_count}} </footer>
+      <footer class="blockquote-footer">Tweets: {{status_count}} </footer>
+    </blockquote>
+  </div>
+</div>
+
+{% if f_count > 0 or status_count > 0 %}
+
+<!-- Table for tweets -->
+<!-- Table for tweets -->
+<div>
+
+ <div class="downbtns">
+  <h5>There are {{left_tweets}} more tweets to read.</h5>
+   <br>
+  <button type="button" class="btn" data-toggle="modal" data-target="#myModal">Download Followers</button>
+  <button class="btn" data-toggle="modal" data-target="#myModal2" type="button">Download tweets</button>
+ </div>
+
+<!-- Modal -->
+
+<form action="download/tweets"  method="POST" id="downform2">
+ {% csrf_token %}
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">We will mail it you</h5>
+        
+      </div>
+      <div class="modal-body">
+        <input type="email" name="useremail" placeholder="abc@email.com" style="width: 250px;">
+        <input type="text" name="count" style="width: 200px;" placeholder="Enter number of tweets">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button  type="submit" id="downsub" class="btn btn-primary">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<form action="download/followers"  method="post" id="downform">
+ {% csrf_token %}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">We will mail it to you</h5>
+        
+      </div>
+      <div class="modal-body">
+        <input type="email" name="useremail" placeholder="abc@email.com" style="width: 250px;">
+        <span class="error_form" id="email_error_message"></span>
+        <input type="text" name="count"  style="width: 200px;" placeholder="Enter number of followers">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button  type="submit" id="downsub" class="btn btn-primary">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<!--  -->
+<!-- Tweets Table -->
+ <div class="tweets">
+     <table class="table t1">
+  <thead>
+    <tr>
+      <th scope="col"><b>S.no</b></th>
+      <th scope="col" style="text-align: center;"><b> Last few tweets of {{screen_name}}</b></th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for item in get_tweets %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{item.text}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+ </table>
+</div>
+
+ <!--  -->
+ <!--  -->
+
+<div class="vline"></div>
+
+ <!-- Table for followers -->
+ <!-- Table for followers -->
+ <div>
+ <table class="table t2">
+  <thead>
+    <tr>
+      <th scope="col"><b>S.no</b></th>
+      <th scope="col"><b> Followers of {{screen_name}}</b>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for item in followers %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{item.name}}</td>
+     </tr>
+   {% endfor %}
+  </tbody>
+ </table>
+ </div>
+</div>
+
+ 
+ <!--  -->
+
+
+ {% endif %}
+</body>
+
+<script>
+  $(function() {
+        $("#email_error_message").hide();
+        var error_email = false;
+        
+        $(".useremail").focusout(function() {
+            check_email();
+        });
+        
+        
+        function check_email() {
+            var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            var email = $("#form_email").val();
+            if (pattern.test(email) && email !== '') {
+              $("#email_error_message").hide();
+              $("#form_email").css("border-bottom","2px solid #34F458");
+            } else {
+              $("#email_error_message").html("Invalid Email");
+              $("#email_error_message").show();
+              $("#form_email").css("border-bottom","2px solid #F90A0A");
+              error_email = true;
+            }
+        }
+
+        $("#registration_form").submit(function() {
+            error_email = false;
+            check_email();
+            
+            if (error_email === false) {
+               alert("Registration Successfull");
+               return true;
+            } else {
+               alert("Please Fill the form Correctly");
+               return false;
+            }
+         });
+      });
+</script>
+</html>
