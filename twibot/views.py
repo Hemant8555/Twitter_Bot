@@ -9,8 +9,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 from tweepy.error import TweepError
 
-auth = tweepy.OAuthHandler("8Gwx83FzaHERLbtAba2p16vxX","IKpa6zqtEw84xh9OiVwynSkIsKrA3YJpGnkBUad9HSvP4GPcyE")
-auth.set_access_token("1066784236353568771-oDQfFwpE2Trm9XmvZqEPYtD66Gu9vC","EdvkzRDx1oPQZrH9Kxpb4GHRuXk5zeNvbr4NsgQ2KhhuS")
+auth = tweepy.OAuthHandler("xxxxxxxxxxxxx","xxxxxxxxxxxxx")
+auth.set_access_token("xxxxxxxxxxxxxxx-xxxxxxxxxxxxxx","xxxxxxxxxxxxxxxxx")
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
 # Create your views here.
@@ -55,8 +55,8 @@ def export_csv(request):
         n = i.name
         wrt.writerow([n])
       
-      email_user = 'kajal.minchu26@gmail.com'
-      email_password = 'Hemant8555@'
+      email_user = 'xxxx@x.xcom'
+      email_password = 'xxxxxxxxxxxxxx'
       email_send = user_email
 
       subject = 'Followers csv file'
@@ -103,8 +103,8 @@ def export_csv_tweets(request):
         n = i.text
         wrt.writerow([n])
 
-      email_user = 'kajal.minchu26@gmail.com'
-      email_password = 'Hemant8555@'
+      email_user = 'xxxxxxxx@xxxxx'
+      email_password = 'xxxxxxxx'
       email_send = user_email
 
       subject = 'Tweets csv file'
